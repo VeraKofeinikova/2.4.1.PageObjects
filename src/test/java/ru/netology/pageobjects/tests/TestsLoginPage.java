@@ -2,73 +2,81 @@ package ru.netology.pageobjects.tests;
 
 import static com.codeborne.selenide.Selenide.open;
 
+import com.codeborne.selenide.Selenide;
 import lombok.val;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.netology.pageobjects.data.DataHelper;
-import ru.netology.pageobjects.page.LoginPageV1;
-import ru.netology.pageobjects.page.LoginPageV2;
-import ru.netology.pageobjects.page.LoginPageV3;
+import ru.netology.pageobjects.page.LoginPage;
 
 public class TestsLoginPage {
-    @Test
-    void shouldTransferMoneyBetweenOwnCardsV1() {
-        //селенидовский метод, который нам открывает страницу
+
+    @BeforeEach
+    public void clearCookies() {
         open("http://localhost:9999");
+        Selenide.clearBrowserCookies();
+        Selenide.clearBrowserLocalStorage();
+    }
 
-        // браузер открылся и мы попали на первую страницу -
-        // и мы создаем объект этой новой первой страницы
-        val loginPage = new LoginPageV1();
-        // строки 16+19 можно заменить на
-        // val loginPage = open("http://localhost:9999", LoginPageV1.class);
-
-
-        //создаем объект, где хранятся данные об авторизации
-        // и присваиваем его в переменную
-        val authInfo = DataHelper.getAuthInfo();
-
-
-        //вызываем метод validLogin из класса LoginPageV1 (
-        // ввод значений в текстовые поля и нажатие кнопки)
-        // и записываем в новую переменную вторую страницу,
-        // которая получается после вызова метода validLogin
-
-        //мы проверяем наличие поля на 2й странице
+    @Test
+    @DisplayName("Успешный вход. Правильные логин-пароль-верификейшн код")
+    void LoginSuccessful() {
+        open("http://localhost:9999");
+        val loginPage = new LoginPage();
+        val authInfo = DataHelper.getCorrectAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);
-
-        //тут же проверим доступность кнопки и тогда продолжаем действия
         verificationPage.assertVerifyBtnAvailable();
-
-        // получаем мастер-пароль и записываем в переменную
         val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
-
-        //проверка пароля из смс
-        // dashboardPage - это уже третья страница
-        val dashboardPage = verificationPage.validVerify(verificationCode);
-
-        //дожидаемся чтобы страница личного кабинета прогрузилась
-        //метод  waitUntilPageisLoaded из класса DashboardPage
-
-        //закрыта эта проверка и метод в классе, потому что
-        //dashboardPage.waitUntilPageisLoaded();
+        verificationPage.validVerify(verificationCode);
     }
+
     @Test
-    void shouldTransferMoneyBetweenOwnCardsV2() {
+    @DisplayName("Невозможно войти. Неправильный логин")
+    void LoginFailedWrongLogin() {
         open("http://localhost:9999");
-        val loginPage = new LoginPageV2();
-        // можно заменить на
-        // val loginPage = open("http://localhost:9999", LoginPageV2.class);
-        val authInfo = DataHelper.getAuthInfo();
-        val verificationPage = loginPage.validLogin(authInfo);
-        val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
-        verificationPage.validVerify(verificationCode);
+        val loginPage = new LoginPage();
+        val notValidLogin = DataHelper.getWrongAuthInfoNotValidLogin();
+        val loginPageWithError = loginPage.notValidLogin(notValidLogin);
     }
+
     @Test
-    void shouldTransferMoneyBetweenOwnCardsV3() {
-        val loginPage = open("http://localhost:9999", LoginPageV3.class);
-        // но здесь обратное не сработает — FindBy только с PageFactory
-        val authInfo = DataHelper.getAuthInfo();
+    @DisplayName("Невозможно войти. Неправильный пароль")
+    void LoginFailedWrongPassword() {
+        open("http://localhost:9999");
+        val loginPage = new LoginPage();
+        val notValidPassword = DataHelper.getWrongAuthInfoNotValidPassword();
+        val loginPageWithError = loginPage.notValidLogin(notValidPassword);
+    }
+
+    @Test
+    @DisplayName("Невозможно войти. Правильные логин-пароль. Неправильный смс-код")
+    void LoginFailedWrongVerificationCode() {
+        open("http://localhost:9999");
+        val loginPage = new LoginPage();
+        val authInfo = DataHelper.getCorrectAuthInfo();
         val verificationPage = loginPage.validLogin(authInfo);
-        val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
-        verificationPage.validVerify(verificationCode);
+        verificationPage.assertVerifyBtnAvailable();
+        val verificationCode = DataHelper.getWrongVerificationCodeFor(authInfo);
+        verificationPage.canNotVerifyWrongCode(verificationCode);
+    }
+
+    @Test
+    @DisplayName("Невозможно войти. Правильные логин-пароль. Превышение количества попыток введения неправильного кода")
+    void LoginFailedWrongVerificationCodeTooMuchAttemptsToPutCode() {
+        open("http://localhost:9999");
+        val loginPage = new LoginPage();
+        val authInfo = DataHelper.getCorrectAuthInfo();
+        val verificationPage = loginPage.validLogin(authInfo);
+        verificationPage.assertVerifyBtnAvailable();
+        val verificationCode1 = DataHelper.getWrongVerificationCodeFor(authInfo);
+        verificationPage.canNotVerifyWrongCode(verificationCode1);
+        val verificationCode2 = DataHelper.getWrongVerificationCodeFor(authInfo);
+        verificationPage.canNotVerifyWrongCode(verificationCode2);
+        val verificationCode3 = DataHelper.getWrongVerificationCodeFor(authInfo);
+        verificationPage.canNotVerifyWrongCode(verificationCode3);
+        val verificationCode4 = DataHelper.getWrongVerificationCodeFor(authInfo);
+        val loginPage2 = new LoginPage();
     }
 }
+

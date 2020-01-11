@@ -2,16 +2,17 @@ package ru.netology.pageobjects.page;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.By;
 
-import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Selenide.$;
 
 public class DashboardPage {
-    private SelenideElement heading = $("[data-test-id=dashboard]");
+    private SelenideElement ul = $(By.className("list_theme_alfa-on-white"));
 
     public DashboardPage() {
-        heading.shouldBe(Condition.visible);
+        ul.shouldBe(Condition.visible);
     }
+}
 
     // закрыт, потому что у спиннера нет css в нашем приложении
     //метод, который будет ожидать какого-то действия
@@ -25,4 +26,4 @@ public class DashboardPage {
 //    public void waitUntilPageisLoaded() {
 //        $ ("balance css").waitUntil(visible, 5);
 //    }
-}
+

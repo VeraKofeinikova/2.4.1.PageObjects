@@ -7,7 +7,6 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 
 public class VerificationPage {
-    //найдены 2 нужных элемента
     private SelenideElement codeField = $("[data-test-id=code] input");
     private SelenideElement verifyButton = $("[data-test-id=action-verify]");
 
@@ -25,6 +24,12 @@ public class VerificationPage {
         codeField.setValue(verificationCode.getCode());
         verifyButton.click();
         return new DashboardPage();
+    }
+
+    public VerificationPageWithWrongCode canNotVerifyWrongCode(DataHelper.VerificationCode verificationCode) {
+        codeField.setValue(verificationCode.getCode());
+        verifyButton.click();
+        return new VerificationPageWithWrongCode();
     }
 
     //проверяем что кнопка для ввода пароля доступна.
