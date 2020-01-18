@@ -4,9 +4,7 @@ import static com.codeborne.selenide.Selenide.open;
 
 import com.codeborne.selenide.Selenide;
 import lombok.val;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.netology.pageobjects.data.DataHelper;
 import ru.netology.pageobjects.page.LoginPage;
 

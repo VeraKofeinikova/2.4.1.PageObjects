@@ -1,5 +1,6 @@
 package ru.netology.pageobjects.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 
@@ -9,6 +10,10 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class LoginPageWithWrongLoginOrWrongPassword {
     // выскакивает поп-ап с предупреждением о неправильном логине или пароле
-    private SelenideElement errorNotification = $(By.className("notification__content")).shouldBe(visible).shouldHave(text("Неверно указан логин или пароль"));
+    private SelenideElement errorNotification = $(By.className("notification__content")).shouldHave(text("Неверно указан логин или пароль"));
+
+    public LoginPageWithWrongLoginOrWrongPassword() {
+        errorNotification.shouldBe(Condition.visible);
+    }
 
 }

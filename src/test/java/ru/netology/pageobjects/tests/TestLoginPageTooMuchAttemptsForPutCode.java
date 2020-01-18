@@ -1,8 +1,7 @@
 package ru.netology.pageobjects.tests;
 
 import lombok.val;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.netology.pageobjects.data.DataHelper;
 import ru.netology.pageobjects.page.LoginPage;
 

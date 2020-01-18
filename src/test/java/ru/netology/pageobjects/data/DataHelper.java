@@ -28,7 +28,6 @@ public class DataHelper {
         private String code;
     }
 
-
     //метод класса DataHelper, в котором мы возвращаем объект с кодом
     public static VerificationCode getVerificationCodeFor(AuthInfo authInfo) {
         return new VerificationCode("12345");
@@ -37,4 +36,28 @@ public class DataHelper {
     public static VerificationCode getWrongVerificationCodeFor(AuthInfo authInfo) {
         return new VerificationCode("23456");
     }
+
+    @Value
+    public static class AmountOfMoney {
+        String amountOfMoney;
+    }
+    public static AmountOfMoney oneHundredRubles() {
+        return new AmountOfMoney("100");
+    }
+    public static AmountOfMoney twentyThousandsRubles() {
+        return new AmountOfMoney("20000");
+    }
+
+    @Value
+    public static class NumberOfCard {
+        String numberOfCard;
+    }
+    public static NumberOfCard CardWithOne() { return new NumberOfCard("5559 0000 0000 0001"); }
+    public static NumberOfCard CardWithTwo() {
+        return new NumberOfCard("5559 0000 0000 0002");
+    }
+    public static NumberOfCard CardWithNotFullNumber() { return new NumberOfCard("5559 000"); }
+    public static NumberOfCard CardDontExist() { return new NumberOfCard("5559 0000 0000 0003"); }
 }
+
+
