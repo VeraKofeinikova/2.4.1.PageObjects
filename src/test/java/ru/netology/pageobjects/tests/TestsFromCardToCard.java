@@ -62,6 +62,15 @@ public class TestsFromCardToCard {
     }
 
     @Test
+    @DisplayName("Нажать любую Пополнить, а на странице Пополнения ввести ту же карту, на которую переводим")
+    void tryToMakePaymentFromSameCard() {
+        val dashboardPaymentFormFromCard2ToCard1 = DashboardPage.FromCard2ToCard1Payment();
+        val amountOfMoney = DataHelper.oneHundredRubles();
+        val numberOfCard1 = DataHelper.CardWithOne();
+        val dashBoardPage = DashboardPagePaymentForm.clickCancelandReturn();
+    }
+
+    @Test
     @DisplayName("Невозможно перевести на другую карту сумму, большую чем баланс карты")
     void shouldNotMakePaymentIfAmountOfSendingBiggerThenBalanceOfCard() {
         val dashboardPaymentFormFromCard2ToCard1 = DashboardPage.FromCard2ToCard1Payment();
