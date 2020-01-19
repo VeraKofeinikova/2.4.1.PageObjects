@@ -47,17 +47,21 @@ public class DataHelper {
     public static AmountOfMoney twentyThousandsRubles() {
         return new AmountOfMoney("20000");
     }
+    public static AmountOfMoney emptyAmountOfMoney() {
+        return new AmountOfMoney(" ");
+    }
 
     @Value
     public static class NumberOfCard {
         String numberOfCard;
     }
-    public static NumberOfCard CardWithOne() { return new NumberOfCard("5559 0000 0000 0001"); }
-    public static NumberOfCard CardWithTwo() {
+    public static NumberOfCard cardWithOne() { return new NumberOfCard("5559 0000 0000 0001"); }
+    public static NumberOfCard cardWithTwo() {
         return new NumberOfCard("5559 0000 0000 0002");
     }
-    public static NumberOfCard CardWithNotFullNumber() { return new NumberOfCard("5559 000"); }
-    public static NumberOfCard CardDontExist() { return new NumberOfCard("5559 0000 0000 0003"); }
+    public static NumberOfCard cardWithNotFullNumber() { return new NumberOfCard("5559 000"); }
+    public static NumberOfCard cardDontExist() { return new NumberOfCard("5559 0000 0000 0003"); }
+    public static NumberOfCard emptyNumberOfCard() { return new NumberOfCard(" "); }
 }
 
 
