@@ -48,7 +48,6 @@ public class TestsFromCardToCard {
         val amountOfMoney = DataHelper.oneHundredRubles();
         val cardWithNotFullNumber = DataHelper.cardWithNotFullNumber();
         val dashboardPage = DashboardPagePaymentForm.notificationAboutNotFullNumberCard(amountOfMoney, cardWithNotFullNumber);
-        //выскакивает ошибка с неправильным текстом и тест падает
     }
 
     @Test
@@ -58,7 +57,6 @@ public class TestsFromCardToCard {
         val amountOfMoney = DataHelper.oneHundredRubles();
         val cardDontExist = DataHelper.cardDontExist();
         val dashboardPage = DashboardPagePaymentForm.notificationYouDontHaveSuchCard(amountOfMoney, cardDontExist);
-        //выскакивает ошибка с неправильным текстом и тест падает
     }
 
     @Test
@@ -75,8 +73,8 @@ public class TestsFromCardToCard {
     void tryToMakePaymentWithEmptyNumberOfCard() {
         val dashboardPaymentFormFromCard2ToCard1 = DashboardPage.FromCard2ToCard1Payment();
         val amountOfMoney = DataHelper.oneHundredRubles();
-        val numberOfCard = DataHelper.emptyNumberOfCard();
-        val dashBoardPage = DashboardPagePaymentForm.notificationOfNoNumberOfCardAtInputFrom(amountOfMoney, numberOfCard);
+        val emptynumberOfCard = DataHelper.emptyNumberOfCard();
+        val dashBoardPage = DashboardPagePaymentForm.notificationOfNoNumberOfCardAtInputFrom(amountOfMoney, emptynumberOfCard);
     }
 
     @Test
@@ -95,6 +93,5 @@ public class TestsFromCardToCard {
         val amountOfMoney = DataHelper.twentyThousandsRubles();
         val numberOfCard2 = DataHelper.cardWithTwo();
         val dashboardPage = DashboardPagePaymentForm.notificationMoreThenBalanceOfCard(amountOfMoney, numberOfCard2);
-        //должна будет возвращаться ошибка, но списание будет происходить и тест упадет
     }
 }

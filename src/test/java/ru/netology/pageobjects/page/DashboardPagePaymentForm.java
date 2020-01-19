@@ -31,11 +31,30 @@ public class DashboardPagePaymentForm {
         form.shouldBe(Condition.visible);
     }
 
-    public static DashboardPage notificationMoreThenBalanceOfCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+    public static DashBoardNewBalance100RublesFromCard2ToCard1 fromCard2ToCard1OneHundredRubles(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
         amount.setValue(amountOfMoney.getAmountOfMoney());
         from.setValue(numberOfCard.getNumberOfCard());
         transferButton.click();
-        notificationMoreThenBalanceOfCard.waitUntil(Condition.visible, 5000).shouldHave(Condition.text("Невозможно перевести сумму денег, превышающую баланс карты"));
+        return new DashBoardNewBalance100RublesFromCard2ToCard1();
+    }
+
+    public static DashBoardNewBalance100RublesFromCard1ToCard2 fromCard1ToCard2OneHundredRubles(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+        amount.setValue(amountOfMoney.getAmountOfMoney());
+        from.setValue(numberOfCard.getNumberOfCard());
+        transferButton.click();
+        return new DashBoardNewBalance100RublesFromCard1ToCard2();
+    }
+
+    public static DashboardPage clickCancelandReturn() {
+        cancelButton.click();
+        return new DashboardPage();
+    }
+
+    public static DashboardPage notificationAboutNotFullNumberCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+        amount.setValue(amountOfMoney.getAmountOfMoney());
+        from.setValue(numberOfCard.getNumberOfCard());
+        transferButton.click();
+        notificationNotFullNumberCard.waitUntil(Condition.visible, 5000).shouldHave(Condition.text("Введите номер карты полностью в поле ввода Откуда"));
         cancelButton.click();
         return new DashboardPage();
     }
@@ -44,10 +63,7 @@ public class DashboardPagePaymentForm {
         amount.setValue(amountOfMoney.getAmountOfMoney());
         from.setValue(numberOfCard.getNumberOfCard());
         transferButton.click();
-        // если здесь убрать //.shouldHave(Condition.text("У вас нет карты с таким номером"));
-        //и вставить .shouldBe(Condition.visible);
-        //то тест падать не будет - но поскольку текст в ошибке неправильный - я специально обрушиваю тест
-        notificationYouDontHaveSuchCard.shouldHave(Condition.text("У вас нет карты с таким номером"));
+        notificationYouDontHaveSuchCard.waitUntil(Condition.visible, 5000).shouldHave(Condition.text("У вас нет карты с таким номером"));
         cancelButton.click();
         return new DashboardPage();
     }
@@ -61,6 +77,15 @@ public class DashboardPagePaymentForm {
         return new DashboardPage();
     }
 
+    public static DashboardPage notificationMoreThenBalanceOfCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+        amount.setValue(amountOfMoney.getAmountOfMoney());
+        from.setValue(numberOfCard.getNumberOfCard());
+        transferButton.click();
+        notificationMoreThenBalanceOfCard.waitUntil(Condition.visible, 5000).shouldHave(Condition.text("Невозможно перевести сумму денег, превышающую баланс карты"));
+        cancelButton.click();
+        return new DashboardPage();
+    }
+
         public static DashboardPage notificationOfEmptyAmountOfMoney(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
             amount.setValue(amountOfMoney.getAmountOfMoney());
             from.setValue(numberOfCard.getNumberOfCard());
@@ -70,46 +95,12 @@ public class DashboardPagePaymentForm {
             return new DashboardPage();
         }
 
-    public static DashboardPage notificationAboutNotFullNumberCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
-        amount.setValue(amountOfMoney.getAmountOfMoney());
-        from.setValue(numberOfCard.getNumberOfCard());
-        transferButton.click();
-        // если здесь убрать .shouldHave(Condition.text("Введите номер карты полностью в поле ввода Откуда"));
-        //и вставить .shouldBe(Condition.visible);
-        //то тест падать не будет - но поскольку текст в ошибке неправильный - я специально обрушиваю тест невыполнимым условием
-        notificationNotFullNumberCard.shouldHave(Condition.text("Введите номер карты полностью в поле ввода Откуда"));
-        cancelButton.click();
-        return new DashboardPage();
-    }
-
     public static DashboardPage notificationOfNoNumberOfCardAtInputFrom(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
         amount.setValue(amountOfMoney.getAmountOfMoney());
         from.setValue(numberOfCard.getNumberOfCard());
         transferButton.click();
-        // если здесь убрать //.shouldHave(Condition.text("Введите номер карты в поле Откуда"));
-        //и вставить .shouldBe(Condition.visible);
-        //то тест падать не будет - но поскольку текст в ошибке неправильный - я специально обрушиваю тест
         notificationNoNumberOfCardAtInputFrom.shouldHave(Condition.text("Введите номер карты в поле Откуда"));
         cancelButton.click();
         return new DashboardPage();
-    }
-
-    public static DashboardPage clickCancelandReturn() {
-        cancelButton.click();
-        return new DashboardPage();
-    }
-
-    public static DashBoardNewBalance100RublesFromCard2ToCard1 fromCard2ToCard1OneHundredRubles(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
-        amount.setValue(amountOfMoney.getAmountOfMoney());
-        from.setValue(numberOfCard.getNumberOfCard());
-        transferButton.click();
-        return new DashBoardNewBalance100RublesFromCard2ToCard1();
-    }
-
-    public static DashBoardNewBalance100RublesFromCard1ToCard2 fromCard1ToCard2OneHundredRubles(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
-        amount.setValue(amountOfMoney.getAmountOfMoney());
-        from.setValue(numberOfCard.getNumberOfCard());
-        transferButton.click();
-        return new DashBoardNewBalance100RublesFromCard1ToCard2();
     }
 }
