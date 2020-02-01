@@ -19,44 +19,80 @@ public class TestsLoginPage {
 
     @Test
     @DisplayName("Успешный вход. Правильные логин-пароль-верификейшн код")
-    void LoginSuccessful() {
+    void loginSuccessful() {
         open("http://localhost:9999");
         val loginPage = new LoginPage();
         val authInfo = DataHelper.getCorrectAuthInfo();
-        val verificationPage = loginPage.validLogin(authInfo);
+        val verificationPage = loginPage.happyPath(authInfo);
         verificationPage.assertVerifyBtnAvailable();
-        val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
+        val verificationCode = DataHelper.getVerificationCodeFor();
         verificationPage.validVerify(verificationCode);
     }
 
     @Test
     @DisplayName("Невозможно войти. Неправильный логин")
-    void LoginFailedWrongLogin() {
+    void loginFailedWrongLogin() {
         open("http://localhost:9999");
         val loginPage = new LoginPage();
-        val notValidLogin = DataHelper.getWrongAuthInfoNotValidLogin();
-        val loginPageWithError = loginPage.notValidLogin(notValidLogin);
+        val notValidLogin = DataHelper.getNotValidLoginValidPassword();
+        loginPage.notValidLoginValidPassword(notValidLogin);
     }
 
     @Test
     @DisplayName("Невозможно войти. Неправильный пароль")
-    void LoginFailedWrongPassword() {
+    void loginFailedWrongPassword() {
         open("http://localhost:9999");
         val loginPage = new LoginPage();
-        val notValidPassword = DataHelper.getWrongAuthInfoNotValidPassword();
-        val loginPageWithError = loginPage.notValidLogin(notValidPassword);
+        val notValidPassword = DataHelper.getValidLoginNotValidPassword();
+        loginPage.validLoginNotValidPassword(notValidPassword);
+    }
+
+    @Test
+    @DisplayName("Невозможно войти. Незаполненный логин")
+    void loginFailedEmptyLogin() {
+        open("http://localhost:9999");
+        val loginPage = new LoginPage();
+        val emptyLogin = DataHelper.getEmptyLoginValidPassword();
+        loginPage.emptyLoginValidPassword(emptyLogin);
+    }
+
+    @Test
+    @DisplayName("Невозможно войти. Незаполненный пароль")
+    void loginFailedEmptyPassword() {
+        open("http://localhost:9999");
+        val loginPage = new LoginPage();
+        val emptyPassword = DataHelper.getValidLoginEmptyPassword();
+        loginPage.validLoginEmptyPassword(emptyPassword);
     }
 
     @Test
     @DisplayName("Невозможно войти. Правильные логин-пароль. Неправильный смс-код")
-    void LoginFailedWrongVerificationCode() {
+    void loginFailedWrongVerificationCode() {
         open("http://localhost:9999");
         val loginPage = new LoginPage();
         val authInfo = DataHelper.getCorrectAuthInfo();
-        val verificationPage = loginPage.validLogin(authInfo);
+        val verificationPage = loginPage.happyPath(authInfo);
         verificationPage.assertVerifyBtnAvailable();
-        val verificationCode = DataHelper.getWrongVerificationCodeFor(authInfo);
-        verificationPage.canNotVerifyWrongCode(verificationCode);
+        val verificationCode = DataHelper.getWrongVerificationCodeFor();
+        verificationPage.notValidVerify(verificationCode);
+    }
+
+    @Test
+    @DisplayName("Невозможно войти. Правильные логин-пароль. Превышение количества попыток введения неправильного кода")
+    void loginFailedWrongVerificationCodeTooMuchAttemptsToPutCode() {
+        open("http://localhost:9999");
+        val loginPage = new LoginPage();
+        val authInfo = DataHelper.getCorrectAuthInfo();
+        val verificationPage = loginPage.happyPath(authInfo);
+        verificationPage.assertVerifyBtnAvailable();
+        val verificationCode1 = DataHelper.getWrongVerificationCodeFor();
+        verificationPage.notValidVerify(verificationCode1);
+        val verificationCode2 = DataHelper.getWrongVerificationCodeFor();
+        verificationPage.notValidVerify(verificationCode2);
+        val verificationCode3 = DataHelper.getWrongVerificationCodeFor();
+        verificationPage.notValidVerify(verificationCode3);
+        val verificationCode4 = DataHelper.getWrongVerificationCodeFor();
+        verificationPage.tooMuchAttemptsOfVerificationCode(verificationCode4);
     }
 }
 

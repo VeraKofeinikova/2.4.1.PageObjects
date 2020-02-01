@@ -8,7 +8,7 @@ import ru.netology.pageobjects.data.DataHelper;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
-public class DashboardPagePaymentForm {
+public class TransferPage {
     private static SelenideElement form = $(By.className("form_theme_alfa-on-white"));
     private static SelenideElement amount = $(By.className("input_type_text")).find(By.className("input__control"));
     private static SelenideElement from = $(By.className("input_type_tel")).find(By.className("input__control"));
@@ -25,24 +25,8 @@ public class DashboardPagePaymentForm {
     private static SelenideElement notificationSameNumberOfCard = $(By.className("notification_visible"));
     private static SelenideElement notificationEmptyAmountOfMoney = $(By.className("notification_visible"));
 
-
-
-    public DashboardPagePaymentForm() {
+    public TransferPage() {
         form.shouldBe(Condition.visible);
-    }
-
-    public static DashBoardNewBalance100RublesFromCard2ToCard1 fromCard2ToCard1OneHundredRubles(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
-        amount.setValue(amountOfMoney.getAmountOfMoney());
-        from.setValue(numberOfCard.getNumberOfCard());
-        transferButton.click();
-        return new DashBoardNewBalance100RublesFromCard2ToCard1();
-    }
-
-    public static DashBoardNewBalance100RublesFromCard1ToCard2 fromCard1ToCard2OneHundredRubles(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
-        amount.setValue(amountOfMoney.getAmountOfMoney());
-        from.setValue(numberOfCard.getNumberOfCard());
-        transferButton.click();
-        return new DashBoardNewBalance100RublesFromCard1ToCard2();
     }
 
     public static DashboardPage clickCancelandReturn() {
@@ -50,57 +34,58 @@ public class DashboardPagePaymentForm {
         return new DashboardPage();
     }
 
-    public static DashboardPage notificationAboutNotFullNumberCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+    public static DashboardPage fromCardToCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+        amount.setValue(amountOfMoney.getAmountOfMoney());
+        from.setValue(numberOfCard.getNumberOfCard());
+        transferButton.click();
+        return new DashboardPage();
+    }
+
+    public static TransferPage notificationAboutNotFullNumberCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
         amount.setValue(amountOfMoney.getAmountOfMoney());
         from.setValue(numberOfCard.getNumberOfCard());
         transferButton.click();
         notificationNotFullNumberCard.waitUntil(Condition.visible, 5000).shouldHave(Condition.text("Введите номер карты полностью в поле ввода Откуда"));
-        cancelButton.click();
-        return new DashboardPage();
+        return new TransferPage();
     }
 
-    public static DashboardPage notificationYouDontHaveSuchCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+    public static TransferPage notificationYouDontHaveSuchCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
         amount.setValue(amountOfMoney.getAmountOfMoney());
         from.setValue(numberOfCard.getNumberOfCard());
         transferButton.click();
         notificationYouDontHaveSuchCard.waitUntil(Condition.visible, 5000).shouldHave(Condition.text("У вас нет карты с таким номером"));
-        cancelButton.click();
-        return new DashboardPage();
+        return new TransferPage();
     }
 
-    public static DashboardPage notificationSameNumberOfCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+    public static TransferPage notificationSameNumberOfCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
         amount.setValue(amountOfMoney.getAmountOfMoney());
         from.setValue(numberOfCard.getNumberOfCard());
         transferButton.click();
         notificationSameNumberOfCard.shouldHave(Condition.text("Невозможно перевести деньги на эту же карту. Введите другой номер карты"));
-        cancelButton.click();
-        return new DashboardPage();
+        return new TransferPage();
     }
 
-    public static DashboardPage notificationMoreThenBalanceOfCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+    public static TransferPage notificationOfEmptyAmountOfMoney(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
         amount.setValue(amountOfMoney.getAmountOfMoney());
         from.setValue(numberOfCard.getNumberOfCard());
         transferButton.click();
-        notificationMoreThenBalanceOfCard.waitUntil(Condition.visible, 5000).shouldHave(Condition.text("Невозможно перевести сумму денег, превышающую баланс карты"));
-        cancelButton.click();
-        return new DashboardPage();
+        notificationEmptyAmountOfMoney.shouldHave(Condition.text("Введите сумму, которую хотите перевести"));
+        return new TransferPage();
     }
 
-        public static DashboardPage notificationOfEmptyAmountOfMoney(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
-            amount.setValue(amountOfMoney.getAmountOfMoney());
-            from.setValue(numberOfCard.getNumberOfCard());
-            transferButton.click();
-            notificationEmptyAmountOfMoney.shouldHave(Condition.text("Введите сумму, которую хотите перевести"));
-            cancelButton.click();
-            return new DashboardPage();
-        }
-
-    public static DashboardPage notificationOfNoNumberOfCardAtInputFrom(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+    public static TransferPage notificationOfNoNumberOfCardAtInputFrom(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
         amount.setValue(amountOfMoney.getAmountOfMoney());
         from.setValue(numberOfCard.getNumberOfCard());
         transferButton.click();
         notificationNoNumberOfCardAtInputFrom.shouldHave(Condition.text("Введите номер карты в поле Откуда"));
-        cancelButton.click();
-        return new DashboardPage();
+        return new TransferPage();
+    }
+
+    public static TransferPage notificationMoreThenBalanceOfCard(DataHelper.AmountOfMoney amountOfMoney, DataHelper.NumberOfCard numberOfCard) {
+        amount.setValue(amountOfMoney.getAmountOfMoney());
+        from.setValue(numberOfCard.getNumberOfCard());
+        transferButton.click();
+        notificationMoreThenBalanceOfCard.waitUntil(Condition.visible, 5000).shouldHave(Condition.text("Невозможно перевести сумму денег, превышающую баланс карты"));
+        return new TransferPage();
     }
 }

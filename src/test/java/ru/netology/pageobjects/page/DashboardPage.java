@@ -9,22 +9,31 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class DashboardPage {
     private SelenideElement ul = $(By.className("list_theme_alfa-on-white"));
+    private static SelenideElement firstButtonActionDeposite = $$(By.className("button_view_extra")).first();
+    private static SelenideElement secondButtonActionDeposite = $$(By.className("button_view_extra")).last();
+    private SelenideElement balanceOfFirstCard = $("[data-test-id='92df3f1c-a033-48e6-8390-206f6b1f56c0']");
+    private SelenideElement balanceOfSecondCard = $("[data-test-id='0f3f5c2a-249e-4c3d-8287-09f7a039391d']");
 
     public DashboardPage() {
         ul.shouldBe(Condition.visible);
     }
 
-    private static SelenideElement firstButtonActionDeposite = $$(By.className("button_view_extra")).first();
-    private static SelenideElement secondButtonActionDeposite = $$(By.className("button_view_extra")).last();
-
-    public static DashboardPagePaymentForm FromCard2ToCard1Payment() {
-        firstButtonActionDeposite.click();
-        return new DashboardPagePaymentForm();
+    public SelenideElement getBalanceOfFirstCard() {
+        return balanceOfFirstCard;
     }
 
-    public static DashboardPagePaymentForm FromCard1ToCard2Payment() {
+    public SelenideElement getBalanceOfSecondCard() {
+        return balanceOfSecondCard;
+    }
+
+    public static TransferPage fromCardTwoToCardOne() {
+        firstButtonActionDeposite.click();
+        return new TransferPage();
+    }
+
+    public static TransferPage fromCardOneToCardTwo() {
         secondButtonActionDeposite.click();
-        return new DashboardPagePaymentForm();
+        return new TransferPage();
     }
 }
 
