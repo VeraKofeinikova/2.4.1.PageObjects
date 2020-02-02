@@ -23,7 +23,7 @@ public class TestsFromCardToCard {
 
     @Test
     @DisplayName("Нажать любую Пополнить, а на странице Пополнения нажать Отменить, вернулись на страницу баланса")
-    void cancelOfPayment() {
+    void case001cancelOfPayment() {
         val transferPage = DashboardPage.fromCardTwoToCardOne();
         transferPage.clickCancelandReturn();
     }
@@ -31,7 +31,7 @@ public class TestsFromCardToCard {
     //пока должен падать - сейчас текст у сообщения об ошибке неправильный
     @Test
     @DisplayName("Ввести номер карты неполностью типа 5559 000")
-    void notWriteFullNumberOfCard() {
+    void case002notWriteFullNumberOfCard() {
         val transferPage = DashboardPage.fromCardTwoToCardOne();
         val amountOfMoney = DataHelper.oneHundredRubles();
         val cardWithNotFullNumber = DataHelper.cardWithNotFullNumber();
@@ -41,7 +41,7 @@ public class TestsFromCardToCard {
     //пока должен падать - сейчас текст у сообщения об ошибке неправильный
     @Test
     @DisplayName("Ввести несуществующую карту 5559 0000 0000 0003")
-    void wrongNumberOfCardFromWhichWeTakeMoney() {
+    void case003wrongNumberOfCardFromWhichWeTakeMoney() {
         val transferPage = DashboardPage.fromCardTwoToCardOne();
         val amountOfMoney = DataHelper.oneHundredRubles();
         val cardDontExist = DataHelper.cardDontExist();
@@ -52,7 +52,7 @@ public class TestsFromCardToCard {
     //на DashboardPage
     @Test
     @DisplayName("Ввести тот же номер карты, на которую переводим")
-    void tryToMakePaymentFromSameCard() {
+    void case004tryToMakePaymentFromSameCard() {
         val transferPage = DashboardPage.fromCardTwoToCardOne();
         val amountOfMoney = DataHelper.oneHundredRubles();
         val numberOfCardOne = DataHelper.cardWithOne();
@@ -62,7 +62,7 @@ public class TestsFromCardToCard {
     //пока должен падать - сейчас текст у сообщения об ошибке неправильный
     @Test
     @DisplayName("Нажать любую Пополнить, а на странице Пополнения не ввести номер карты, с которой переводим")
-    void tryToMakePaymentWithEmptyNumberOfCard() {
+    void case005tryToMakePaymentWithEmptyNumberOfCard() {
         val transferPage = DashboardPage.fromCardTwoToCardOne();
         val amountOfMoney = DataHelper.oneHundredRubles();
         val emptyNumberOfCard = DataHelper.emptyNumberOfCard();
@@ -73,7 +73,7 @@ public class TestsFromCardToCard {
     //на DashboardPage
     @Test
     @DisplayName("Нажать любую Пополнить, а на странице Пополнения не ввести количество денег")
-    void tryToMakePaymentWithEmptyAmountOfMoney() {
+    void case006tryToMakePaymentWithEmptyAmountOfMoney() {
         val transferPage = DashboardPage.fromCardTwoToCardOne();
         val amountOfMoney = DataHelper.emptyAmountOfMoney();
         val numberOfCardTwo = DataHelper.cardWithTwo();
@@ -82,7 +82,7 @@ public class TestsFromCardToCard {
 
     @Test
     @DisplayName("Успешный перевод 100 рублей с карты2 на карту1")
-    void sendFromCardTwoToCardOne() {
+    void case007sendFromCardTwoToCardOne() {
         val dashboardPage = new DashboardPage();
         int startBalanceOfCardOne = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfFirstCard().getText()));
         int startBalanceOfCardTwo = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfSecondCard().getText()));
@@ -101,7 +101,7 @@ public class TestsFromCardToCard {
 
     @Test
     @DisplayName("Успешный перевод 100 рублей с карты1 на карту2")
-    void sendFromCardOneToCardTwo() {
+    void case008sendFromCardOneToCardTwo() {
         val dashboardPage = new DashboardPage();
         int startBalanceOfCardOne = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfFirstCard().getText()));
         int startBalanceOfCardTwo = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfSecondCard().getText()));
@@ -122,7 +122,7 @@ public class TestsFromCardToCard {
     //больше баланса карты, откуда переводят
     @Test
     @DisplayName("Невозможно перевести на другую карту сумму, большую чем баланс карты")
-    void shouldNotMakePaymentIfAmountOfSendingBiggerThenBalanceOfCard() {
+    void case009shouldNotMakePaymentIfAmountOfSendingBiggerThenBalanceOfCard() {
         val dashboardPage = new DashboardPage();
         int startBalanceOfCardOne = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfFirstCard().getText()));
         int startBalanceOfCardTwo = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfSecondCard().getText()));
