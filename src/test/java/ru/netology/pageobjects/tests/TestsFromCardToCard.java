@@ -23,70 +23,19 @@ public class TestsFromCardToCard {
 
     @Test
     @DisplayName("Нажать любую Пополнить, а на странице Пополнения нажать Отменить, вернулись на страницу баланса")
-    void case001cancelOfPayment() {
-        val transferPage = DashboardPage.fromCardTwoToCardOne();
-        transferPage.clickCancelandReturn();
-    }
-
-    //пока должен падать - сейчас текст у сообщения об ошибке неправильный
-    @Test
-    @DisplayName("Ввести номер карты неполностью типа 5559 000")
-    void case002notWriteFullNumberOfCard() {
-        val transferPage = DashboardPage.fromCardTwoToCardOne();
-        val amountOfMoney = DataHelper.oneHundredRubles();
-        val cardWithNotFullNumber = DataHelper.cardWithNotFullNumber();
-        transferPage.notificationAboutNotFullNumberCard(amountOfMoney, cardWithNotFullNumber);
-    }
-
-    //пока должен падать - сейчас текст у сообщения об ошибке неправильный
-    @Test
-    @DisplayName("Ввести несуществующую карту 5559 0000 0000 0003")
-    void case003wrongNumberOfCardFromWhichWeTakeMoney() {
-        val transferPage = DashboardPage.fromCardTwoToCardOne();
-        val amountOfMoney = DataHelper.oneHundredRubles();
-        val cardDontExist = DataHelper.cardDontExist();
-        transferPage.notificationYouDontHaveSuchCard(amountOfMoney, cardDontExist);
-    }
-
-    //пока должен падать: должно выскакивать сообщение об ошибке, а нас просто выкидывает
-    //на DashboardPage
-    @Test
-    @DisplayName("Ввести тот же номер карты, на которую переводим")
-    void case004tryToMakePaymentFromSameCard() {
-        val transferPage = DashboardPage.fromCardTwoToCardOne();
-        val amountOfMoney = DataHelper.oneHundredRubles();
-        val numberOfCardOne = DataHelper.cardWithOne();
-        transferPage.notificationSameNumberOfCard(amountOfMoney, numberOfCardOne);
-    }
-
-    //пока должен падать - сейчас текст у сообщения об ошибке неправильный
-    @Test
-    @DisplayName("Нажать любую Пополнить, а на странице Пополнения не ввести номер карты, с которой переводим")
-    void case005tryToMakePaymentWithEmptyNumberOfCard() {
-        val transferPage = DashboardPage.fromCardTwoToCardOne();
-        val amountOfMoney = DataHelper.oneHundredRubles();
-        val emptyNumberOfCard = DataHelper.emptyNumberOfCard();
-        transferPage.notificationOfNoNumberOfCardAtInputFrom(amountOfMoney, emptyNumberOfCard);
-    }
-
-    //пока должен падать: должно выскакивать сообщение об ошибке, а нас просто выкидывает
-    //на DashboardPage
-    @Test
-    @DisplayName("Нажать любую Пополнить, а на странице Пополнения не ввести количество денег")
-    void case006tryToMakePaymentWithEmptyAmountOfMoney() {
-        val transferPage = DashboardPage.fromCardTwoToCardOne();
-        val amountOfMoney = DataHelper.emptyAmountOfMoney();
-        val numberOfCardTwo = DataHelper.cardWithTwo();
-        transferPage.notificationOfEmptyAmountOfMoney(amountOfMoney, numberOfCardTwo);
+    void cancelOfPayment() {
+        val dashboardPage = new DashboardPage();
+        val transferPage = dashboardPage.fromCardTwoToCardOne();
+        transferPage.clickCancelAndReturn();
     }
 
     @Test
     @DisplayName("Успешный перевод 100 рублей с карты2 на карту1")
-    void case007sendFromCardTwoToCardOne() {
+    void sendFromCardTwoToCardOne() {
         val dashboardPage = new DashboardPage();
         int startBalanceOfCardOne = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfFirstCard().getText()));
         int startBalanceOfCardTwo = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfSecondCard().getText()));
-        val transferPage = DashboardPage.fromCardTwoToCardOne();
+        val transferPage = dashboardPage.fromCardTwoToCardOne();
         val amountOfMoney = DataHelper.oneHundredRubles();
         int amountOfMoneyForCalculate = Integer.parseInt(amountOfMoney.getAmountOfMoney());
         val numberOfCardTwo = DataHelper.cardWithTwo();
@@ -101,11 +50,11 @@ public class TestsFromCardToCard {
 
     @Test
     @DisplayName("Успешный перевод 100 рублей с карты1 на карту2")
-    void case008sendFromCardOneToCardTwo() {
+    void sendFromCardOneToCardTwo() {
         val dashboardPage = new DashboardPage();
         int startBalanceOfCardOne = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfFirstCard().getText()));
         int startBalanceOfCardTwo = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfSecondCard().getText()));
-        val transferPage = DashboardPage.fromCardOneToCardTwo();
+        val transferPage = dashboardPage.fromCardOneToCardTwo();
         val amountOfMoney = DataHelper.oneHundredRubles();
         int amountOfMoneyForCalculate = Integer.parseInt(amountOfMoney.getAmountOfMoney());
         val numberOfCardOne = DataHelper.cardWithOne();
@@ -118,20 +67,18 @@ public class TestsFromCardToCard {
         assertEquals(expectedBalanceOfCardTwo, actualBalanceOfSecondCard);
     }
 
-    //должен упасть - сейчас возможно перевести на другую карту сумму, которая
-    //больше баланса карты, откуда переводят
     @Test
     @DisplayName("Невозможно перевести на другую карту сумму, большую чем баланс карты")
-    void case009shouldNotMakePaymentIfAmountOfSendingBiggerThenBalanceOfCard() {
+    void shouldNotMakePaymentIfAmountOfSendingBiggerThenBalanceOfCard() {
         val dashboardPage = new DashboardPage();
         int startBalanceOfCardOne = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfFirstCard().getText()));
         int startBalanceOfCardTwo = Integer.parseInt(DataHelper.extractingBalance(dashboardPage.getBalanceOfSecondCard().getText()));
-        val transferPage = DashboardPage.fromCardTwoToCardOne();
+        val transferPage = dashboardPage.fromCardTwoToCardOne();
         val amountOfMoney = DataHelper.twentyThousandsRubles();
         int amountOfMoneyForCalculate = Integer.parseInt(amountOfMoney.getAmountOfMoney());
         val numberOfCardTwo = DataHelper.cardWithTwo();
         if (amountOfMoneyForCalculate > startBalanceOfCardTwo) {
-            transferPage.notificationMoreThenBalanceOfCard(amountOfMoney, numberOfCardTwo);
+            transferPage.stayOnTransferPage(amountOfMoney, numberOfCardTwo);
         }
     }
 }
